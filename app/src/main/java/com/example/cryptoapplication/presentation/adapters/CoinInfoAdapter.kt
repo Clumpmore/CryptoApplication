@@ -1,4 +1,4 @@
-package com.example.cryptoapplication.adapters
+package com.example.cryptoapplication.presentation.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.cryptoapplication.R
 import com.example.cryptoapplication.databinding.ItemCoinInfoBinding
-import com.example.cryptoapplication.pojo.CoinPriceInfo
+import com.example.cryptoapplication.domain.CoinInfo
 import com.squareup.picasso.Picasso
 
 
 class CoinInfoAdapter(private val context: Context) :
     RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
 
-    var coinInfoList: List<CoinPriceInfo> = listOf()
+    var coinInfoList: List<CoinInfo> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -36,14 +36,15 @@ class CoinInfoAdapter(private val context: Context) :
 
     inner class CoinInfoViewHolder(itemView: View) : ViewHolder(itemView) {
         val binding = ItemCoinInfoBinding.bind(itemView)
-        fun bind(coinInfoList: CoinPriceInfo) = with(binding) {
+        fun bind(coinInfoList: CoinInfo) = with(binding) {
             with(coinInfoList) {
                 val symbolsTemplate = context.resources.getString(R.string.symbols_template)
                 val lastUpdateTemplate = context.resources.getString(R.string.last_update_template)
                 tvSymbols.text = String.format(symbolsTemplate, fromSymbol, toSymbol)
                 tvPrice.text = price.toString()
-                tvLastUpdate.text = String.format(lastUpdateTemplate, getFormatedTime())
-                Picasso.get().load(getFullImageUrl()).into(ivLogoCoin)
+                tvLastUpdate.text =
+                    String.format(lastUpdateTemplate, lastUpdateTemplate)
+                Picasso.get().load(imageUrl).into(ivLogoCoin)
                 itemView.setOnClickListener {
                     onCoinClickListener?.onCoinClick(this)
                 }
@@ -56,6 +57,6 @@ class CoinInfoAdapter(private val context: Context) :
     }
 
     interface OnCoinClickListener {
-        fun onCoinClick(coinPriceInfo: CoinPriceInfo)
+        fun onCoinClick(coinPriceInfo: CoinInfo)
     }
 }
